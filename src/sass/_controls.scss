@@ -1,0 +1,85 @@
+@use './_utils/variables' as *;
+@use './_utils/mixins';
+
+// кнопка
+.button-icon {
+    border: none;
+    background: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    opacity: 0.8;
+    &__image {
+        width: 35px;
+        height: auto;
+    }
+    &:hover {
+        opacity: 1;
+        cursor: pointer;
+        filter: brightness(0) saturate(100%) invert(29%) sepia(42%)
+            saturate(2158%) hue-rotate(350deg) brightness(89%) contrast(97%);
+    }
+    &:active {
+        filter: brightness(0) saturate(100%) invert(51%) sepia(49%)
+            saturate(527%) hue-rotate(333deg) brightness(87%) contrast(89%);
+    }
+    &_small {
+        .button-icon__image {
+            width: 32px;
+        }
+    }
+    &_grey {
+        opacity: 0.5;
+    }
+}
+
+// группа радиокнопок
+.radio-buttons {
+    display: flex;
+    align-items: center;
+    &__input {
+        display: none;
+        &:checked + .radio-buttons__text {
+            color: #ff7134;
+            text-decoration-line: underline;
+        }
+    }
+    &__text {
+        cursor: pointer;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 5px;
+        &:hover {
+            text-decoration-line: underline;
+        }
+    }
+}
+
+// чекбокс
+.checkbox {
+    @include mixins.appearance-none;
+    opacity: 0.8;
+    margin: 0;
+    width: 28px;
+    height: 28px;
+    border: 2px solid $black;
+    border-radius: 4px;
+    &:hover {
+        cursor: pointer;
+    }
+    &:checked {
+        background-image: url('/src/assets/images/ic-check.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 25px;
+    }
+    &_circular {
+        opacity: 1;
+        border-radius: 50%;
+        border-color: #11a66a;
+        &:checked {
+            background-color: #11a66a;
+            background-image: url('/src/assets/images/ic-check-white.svg');
+        }
+    }
+}

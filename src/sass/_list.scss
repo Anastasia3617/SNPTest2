@@ -1,0 +1,88 @@
+@use './_utils/variables' as *;
+@use './_utils/mixins';
+
+.list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    list-style-type: none;
+    overflow: auto;
+
+    // пункт списка
+    &__item {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid rgba(177, 177, 177, 0.5);
+        &:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        &:first-child,
+        &:nth-child(2) {
+            padding-top: 0;
+        }
+        &_checked {
+            .list__text {
+                text-decoration: line-through;
+            }
+        }
+        &:hover,
+        &_hover {
+            .list__button {
+                display: inline-block;
+            }
+            .list__text {
+                pointer-events: all;
+            }
+        }
+        &_edit {
+            .list__button {
+                display: none;
+            }
+            .checkbox {
+                display: none;
+            }
+            .list__text {
+                text-decoration: none;
+                pointer-events: all;
+            }
+            &:hover {
+                .list__button {
+                    display: none;
+                }
+            }
+        }
+
+        // пункт с информацией
+        &_info {
+            text-align: center;
+            font-style: italic;
+            justify-content: center;
+        }
+    }
+
+    // текст пункта
+    &__text {
+        pointer-events: none;
+        flex: 1;
+        overflow: hidden;
+        padding: 0.5rem 0.75rem;
+        box-sizing: border-box;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        &:focus {
+            border-color: rgba(48, 160, 251, 0.7);
+            outline: none;
+            @include mixins.box-shadow(0px 0px 5px 1px rgba(48, 160, 251, 0.7));
+        }
+    }
+
+    // кнопка удалить
+    &__button {
+        position: absolute;
+        right: -7px;
+        display: none;
+    }
+}

@@ -1,0 +1,117 @@
+@use './_utils/variables' as *;
+@use './_utils/mixins';
+
+$todo-size-icon: 16vw;
+$todo-max-size-icon: 73px;
+$todo-padding: 1.5rem;
+$todo-gap: 1rem;
+$todo-column-gap: 0.7rem;
+
+.todo {
+    &__inner {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        @include mixins.box-shadow(0px 2px 5px 1px rgba(34, 60, 80, 0.2));
+        border-radius: 2px;
+        background-color: #ffffff;
+        max-height: calc(100% - $todo-size-icon / 3);
+        margin-top: calc($todo-size-icon / 3);
+        @media (min-width: 460px) {
+            max-height: calc(100% - $todo-max-size-icon / 3);
+            margin-top: calc($todo-max-size-icon / 3);
+        }
+
+        // иконка
+        &::before {
+            content: '';
+            position: absolute;
+            top: calc($todo-size-icon / 3 * -1);
+            left: $todo-padding;
+            height: $todo-size-icon;
+            max-height: $todo-max-size-icon;
+            width: $todo-size-icon;
+            max-width: $todo-max-size-icon;
+            background-size: 75%;
+            background-color: #42aaff;
+            background-image: url('assets/images/ic-list.svg');
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 10px;
+            @media (min-width: 460px) {
+                top: calc($todo-max-size-icon / 3 * -1);
+            }
+        }
+    }
+
+    // шапка
+    &__header {
+        display: flex;
+        flex-direction: column;
+        row-gap: $todo-gap;
+        padding: $todo-padding $todo-padding calc($todo-gap / 2) $todo-padding;
+        border-bottom: 1px solid #b1b1b1;
+    }
+
+    // заголовок
+    &__title {
+        text-align: center;
+        margin: 0 0 5px 0;
+    }
+
+    // инфо сколько осталось выполнить
+    &__text {
+        margin: 0;
+    }
+
+    // поле ввода для новой задачи
+    &__input {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        box-sizing: border-box;
+        border-radius: 4px;
+        border: 1px solid #b3b5b6;
+        &::placeholder {
+            color: $gray;
+            font-style: italic;
+        }
+        &:hover {
+            cursor: pointer;
+            border-color: rgba(48, 160, 251, 0.7);
+            @include mixins.box-shadow(0px 0px 5px 1px rgba(48, 160, 251, 0.7));
+        }
+        &:focus {
+            background-color: rgba(85, 143, 190, 0.1);
+            border-color: rgba(48, 160, 251, 0.7);
+            @include mixins.box-shadow(none);
+            outline: none;
+        }
+    }
+
+    // блок с элементами управления
+    &__controls {
+        display: none;
+        justify-content: space-between;
+    }
+
+    // кнопки
+    &__buttons {
+        height: 35px;
+        display: flex;
+        align-items: center;
+        gap: $todo-column-gap;
+    }
+    &__button-delete {
+        display: none;
+    }
+
+    // радиокнопки
+    &__radio-buttons {
+        gap: $todo-column-gap;
+    }
+
+    // список
+    &__list {
+        padding: calc($todo-gap / 2) $todo-padding $todo-padding $todo-padding;
+    }
+}

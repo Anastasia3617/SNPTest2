@@ -1,0 +1,32 @@
+@use './_utils/variables' as *;
+@use './_utils/mixins';
+@use 'sass:math';
+
+$font-size: 16;
+$font-size-l: 20;
+$step: 1.2;
+
+// типографика
+.text {
+    @include mixins.responsive-property(font-size, $font-size, $font-size-l);
+    line-height: 142%;
+    font-family: 'Roboto', 'Arial', sans-serif;
+    color: $black;
+    font-optical-sizing: auto;
+    &_title {
+        font-size: math.pow($step, 3) * 1rem;
+        line-height: 122%;
+    }
+    &_small {
+        font-size: math.pow($step, -1) * 1rem;
+    }
+    &_blue {
+        color: #1564a6;
+    }
+    &_gray {
+        color: $gray;
+    }
+    &_bold {
+        font-weight: bold;
+    }
+}

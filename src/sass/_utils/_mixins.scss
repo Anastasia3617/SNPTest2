@@ -1,0 +1,67 @@
+@use 'sass:map';
+@use 'sass:math';
+@use './variables' as *;
+
+/*
+Расчет значения свойства на промежуточных экранах
+- $min: значение свойства на минимальном размере экрана
+- $max: значение свойства на максимальном размере экрана
+- $screen-min: минимальный размер экрана
+- $screen-max: максимальный размер экрана
+*/
+@function calc-property(
+    $min,
+    $max,
+    $screen-min: $screen-s,
+    $screen-max: $screen-m
+) {
+    $range: $max - $min;
+    $screen-range: $screen-max - $screen-min;
+    $multiplier: calc($range / $screen-range);
+    @return calc(#{$min}px + (#{$multiplier} * (100vw - #{$screen-min}px)));
+}
+
+/*
+Установка адаптивного свойства
+- $property: свойство
+- $min: значение свойства на минимальном размере экрана
+- $max: значение свойства на максимальном размере экрана
+- $screen-min: минимальный размер экрана
+- $screen-max: максимальный размер экрана
+*/
+@mixin responsive-property(
+    $property,
+    $min,
+    $max,
+    $screen-min: $screen-s,
+    $screen-max: $screen-m
+) {
+    @media ( min-width: #{ $screen-max }px ) {
+        #{ $property }: #{$max}px;
+    }
+    @media screen and (max-width: #{ $screen-max }px ) and (min-width: #{ $screen-min + 1 }px) {
+        #{$property}: calc-property($min, $max, $screen-min, $screen-max);
+    }
+    @media ( max-width: #{ $screen-min }px ) {
+        #{ $property }: #{$min}px;
+    }
+}
+
+/*
+Отключение стандартного оформления
+*/
+@mixin appearance-none() {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/*
+Установка тени к элементу
+- $value: значение
+*/
+@mixin box-shadow($value) {
+    -webkit-box-shadow: $value;
+    -moz-box-shadow: $value;
+    box-shadow: $value;
+}

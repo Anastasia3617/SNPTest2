@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru" class="page text">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="shortcut icon"
+            href="assets/images/favicon.svg"
+            type="image/svg" />
+        <link rel="icon" href="assets/images/favicon.svg" type="image/svg" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="preload"
+            as="style"
+            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap"
+            media="print"
+            onload="this.media='all'" />
+        <noscript>
+            <link
+                rel="stylesheet"
+                href="https://fonts.googleapis.com/css2?family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap" />
+        </noscript>
+        <title>ToDo List — Планируй свои дела легко!</title>
+        <meta
+            name="keywords"
+            content="todo list, task list, список дел, задачи онлайн, управление задачами, добавление задач" />
+        <meta
+            name="description"
+            content="Начните планировать свой день прямо сейчас с помощью удобного онлайн Todo list. Добавляйте, редактируйте и выполняйте свои задачи быстро и легко." />
+    <script defer src="/SNPTest2/index.js"></script><link href="/SNPTest2/style.css" rel="stylesheet"></head>
+    <body class="body">
+        <div class="todo body__todo">
+            <div class="todo__inner">
+                <div class="todo__header">
+                    <h1 class="text text_title todo__title">Список дел</h1>
+                    <p class="text text_blue todo__text">
+                        Осталось выполнить:
+                        <span class="text text_blue text_bold" id="span-active">
+                            0
+                        </span>
+                    </p>
+                    <input
+                        id="input-add-task"
+                        class="todo__input text"
+                        type="text"
+                        placeholder="Введите новую задачу + Enter" />
+                    <div id="container-controls" class="todo__controls">
+                        <div class="todo__buttons">
+                            <input
+                                id="checkbox-tasks"
+                                type="checkbox"
+                                class="checkbox" />
+                            <button
+                                id="button-delete-completed"
+                                class="button-icon todo__button-delete"
+                                title="Удалить выполненные задачи">
+                                <img
+                                    class="button-icon__image"
+                                    src="assets/images/ic-delete.svg"
+                                    alt="Удалить выполненные задачи" />
+                            </button>
+                        </div>
+                        <div
+                            id="filter-tasks"
+                            class="radio-buttons todo__radio-buttons text text_bold">
+                            <input
+                                class="radio-buttons__input"
+                                type="radio"
+                                id="radio-button-all"
+                                name="status-task"
+                                checked />
+                            <label
+                                class="radio-buttons__text"
+                                for="radio-button-all"
+                                filter="all">
+                                Все
+                            </label>
+                            <input
+                                class="radio-buttons__input"
+                                type="radio"
+                                id="radio-button-active"
+                                name="status-task" />
+                            <label
+                                class="radio-buttons__text"
+                                for="radio-button-active"
+                                filter="active">
+                                В работе
+                            </label>
+                            <input
+                                class="radio-buttons__input"
+                                type="radio"
+                                id="radio-button-completed"
+                                name="status-task" />
+                            <label
+                                class="radio-buttons__text"
+                                for="radio-button-completed"
+                                filter="completed">
+                                Выполнено
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <ul id="list-tasks" class="list todo__list">
+                    <li
+                        id="li-info"
+                        class="list__item list__item_info text text_small text_gray">
+                        Чтобы отредактировать задачу, дважды кликните по ней.
+                        Чтобы выйти из режима редактирования нажмите
+                        «Ctrl+Enter» или «Готово».
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

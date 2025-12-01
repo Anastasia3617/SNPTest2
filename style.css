@@ -116,6 +116,9 @@
 .list__item_checked .list__text {
   text-decoration: line-through;
 }
+.list__item_hover .list__button {
+  display: inline-block;
+}
 .list__item_hover .list__text {
   pointer-events: all;
 }

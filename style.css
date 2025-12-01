@@ -119,9 +119,6 @@
 .list__item_hover .list__button {
   display: inline-block;
 }
-.list__item_hover .list__text {
-  pointer-events: all;
-}
 @media (hover: hover) {
   .list__item:hover .list__button {
     display: inline-block;

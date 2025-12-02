@@ -117,16 +117,14 @@
   text-decoration: line-through;
 }
 .list__item_hover .list__button {
-  opacity: 1;
-  pointer-events: all;
+  display: inline-block;
 }
 .list__item_hover .list__text {
   pointer-events: all;
 }
 @media (hover: hover) {
   .list__item:hover .list__button {
-    opacity: 1;
-    pointer-events: all;
+    display: inline-block;
   }
   .list__item:hover .list__text {
     pointer-events: all;
@@ -173,8 +171,7 @@
 .list__button {
   position: absolute;
   right: -7px;
-  opacity: 0;
-  pointer-events: none;
+  display: none;
 }
 
 .todo__inner {

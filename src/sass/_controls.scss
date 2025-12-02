@@ -68,7 +68,7 @@
         cursor: pointer;
     }
     &:checked {
-        background-image: url('/src/assets/images/ic-check.svg');
+        background-image: url('assets/images/ic-check.svg');
         background-repeat: no-repeat;
         background-position: center;
         background-size: 25px;
@@ -79,7 +79,7 @@
         border-color: #11a66a;
         &:checked {
             background-color: #11a66a;
-            background-image: url('/src/assets/images/ic-check-white.svg');
+            background-image: url('assets/images/ic-check-white.svg');
         }
     }
 }

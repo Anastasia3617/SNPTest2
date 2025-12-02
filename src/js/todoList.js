@@ -101,6 +101,21 @@ export const TodoListManager = {
             'touchstart',
             this._handlerDocumentTouchstart.bind(this),
         );
+
+        window.addEventListener('scroll', () => {
+            // фиксация шапки
+            if (window.scrollY > 263) {
+                controls.containerСontrols.classList.add(
+                    'todo__controls_fixed',
+                );
+                controls.containerСontrols.classList.add('wrapper');
+            } else {
+                controls.containerСontrols.classList.remove(
+                    'todo__controls_fixed',
+                );
+                controls.containerСontrols.classList.remove('wrapper');
+            }
+        });
     },
 
     /**
@@ -298,10 +313,14 @@ export const TodoListManager = {
      * @param {object} event - событие
      */
     _handlerItemTouchStart(event) {
-        event.stopPropagation();
         const { target } = event;
         const { _itemTap: itemTap } = this;
         const itemTask = target ? target.closest('.list__item') : null;
+        const tagName = target ? target.tagName : null;
+        const names = ['INPUT', 'IMG', 'BUTTON'];
+        if (tagName && !names.includes(tagName)) {
+            event.stopPropagation();
+        }
         if (itemTask) {
             // если мы до этого касались другой строки, то у нее сбрасываем режим редактирования
             if (
@@ -311,13 +330,12 @@ export const TodoListManager = {
                 this._clearItemTap();
             }
 
-            // устанавливаем ховер
-            itemTask.classList.add('list__item_hover');
-            this._itemTap = itemTask;
-
             if (!itemTask.singleTapTimer) {
                 // одиночный тап
                 itemTask.singleTapTimer = setTimeout(() => {
+                    // устанавливаем ховер
+                    this._itemTap = itemTask;
+                    itemTask.classList.add('list__item_hover');
                     itemTask.singleTapTimer = null;
                 }, 300);
             } else {
@@ -329,7 +347,7 @@ export const TodoListManager = {
                 itemTask.singleTapTimer = null;
 
                 // устанавливаем режим редактирования
-                if (target.getAttribute('type') !== 'checkbox') {
+                if (tagName && !names.includes(tagName)) {
                     this._setModeEditTask({ item: itemTask });
                 }
             }

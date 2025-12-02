@@ -5,20 +5,16 @@ $todo-size-icon: 16vw;
 $todo-max-size-icon: 73px;
 $todo-padding: 1.5rem;
 $todo-gap: 1rem;
-$todo-column-gap: 0.7rem;
+$todo-column-gap: 0.5rem;
 
 .todo {
     &__inner {
         position: relative;
-        display: flex;
-        flex-direction: column;
         @include mixins.box-shadow(0px 2px 5px 1px rgba(34, 60, 80, 0.2));
         border-radius: 2px;
         background-color: #ffffff;
-        max-height: calc(100% - $todo-size-icon / 3);
         margin-top: calc($todo-size-icon / 3);
         @media (min-width: 460px) {
-            max-height: calc(100% - $todo-max-size-icon / 3);
             margin-top: calc($todo-max-size-icon / 3);
         }
 
@@ -67,7 +63,7 @@ $todo-column-gap: 0.7rem;
     // поле ввода для новой задачи
     &__input {
         width: 100%;
-        padding: 0.5rem 0.75rem;
+        padding: 0.55rem 0.8rem;
         box-sizing: border-box;
         border-radius: 4px;
         border: 1px solid #b3b5b6;
@@ -92,6 +88,17 @@ $todo-column-gap: 0.7rem;
     &__controls {
         display: none;
         justify-content: space-between;
+
+        &_fixed {
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            padding: 0.5rem 1.5rem;
+            margin-left: -1.5rem;
+            box-sizing: border-box;
+            background: rgba(48, 160, 251, 0.2);
+            backdrop-filter: blur(54px);
+        }
     }
 
     // кнопки
@@ -112,6 +119,6 @@ $todo-column-gap: 0.7rem;
 
     // список
     &__list {
-        padding: calc($todo-gap / 2) $todo-padding $todo-padding $todo-padding;
+        padding: 0 $todo-padding $todo-padding $todo-padding;
     }
 }

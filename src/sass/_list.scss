@@ -2,33 +2,22 @@
 @use './_utils/mixins';
 
 .list {
-    display: flex;
-    flex-direction: column;
     margin: 0;
     list-style-type: none;
-    overflow: auto;
 
     // пункт списка
     &__item {
         position: relative;
         display: flex;
         align-items: center;
-        padding: 0.5rem 0;
+        padding: 0.4rem 0;
         border-bottom: 1px solid rgba(177, 177, 177, 0.5);
-        &:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-        &:first-child,
-        &:nth-child(2) {
-            padding-top: 0;
-        }
         &_checked {
             .list__text {
                 text-decoration: line-through;
             }
         }
-        &:hover,
+
         &_hover {
             .list__button {
                 display: inline-block;
@@ -37,6 +26,17 @@
                 pointer-events: all;
             }
         }
+        @media (hover: hover) {
+            &:hover {
+                .list__button {
+                    display: inline-block;
+                }
+                .list__text {
+                    pointer-events: all;
+                }
+            }
+        }
+
         &_edit {
             .list__button {
                 display: none;
@@ -60,6 +60,10 @@
             text-align: center;
             font-style: italic;
             justify-content: center;
+            border-bottom: none;
+            padding-top: 0.6rem;
+            padding-bottom: 0;
+            box-sizing: border-box;
         }
     }
 
@@ -68,7 +72,7 @@
         pointer-events: none;
         flex: 1;
         overflow: hidden;
-        padding: 0.5rem 0.75rem;
+        padding: 0.55rem 0.8rem;
         box-sizing: border-box;
         border: 1px solid transparent;
         border-radius: 4px;

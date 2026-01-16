@@ -2,13 +2,14 @@
 @use 'sass:math';
 @use './variables' as *;
 
-/*
-Расчет значения свойства на промежуточных экранах
-- $min: значение свойства на минимальном размере экрана
-- $max: значение свойства на максимальном размере экрана
-- $screen-min: минимальный размер экрана
-- $screen-max: максимальный размер экрана
-*/
+/**
+ * Расчет значения свойства на промежуточных экранах
+ * @param {number} $min - значение свойства на минимальном размере экрана
+ * @param {number} $max - значение свойства на максимальном размере экрана
+ * @param {number} $screen-min - минимальная размер экрана
+ * @param {number} $screen-max - максимальная размер экрана
+ * @return {string} - clamp-выражение
+ */
 @function calc-property(
     $min,
     $max,
@@ -21,14 +22,14 @@
     @return calc(#{$min}px + (#{$multiplier} * (100vw - #{$screen-min}px)));
 }
 
-/*
-Установка адаптивного свойства
-- $property: свойство
-- $min: значение свойства на минимальном размере экрана
-- $max: значение свойства на максимальном размере экрана
-- $screen-min: минимальный размер экрана
-- $screen-max: максимальный размер экрана
-*/
+/**
+ * Установка адаптивного свойства
+ * @param {string} $property - свойство
+ * @param {number} $min - значение свойства на минимальном размере экрана
+ * @param {number} $max - значение свойства на максимальном размере экрана
+ * @param {number} $screen-min - минимальный размер экрана
+ * @param {number} $screen-max - максимальный размер экрана
+ */
 @mixin responsive-property(
     $property,
     $min,
@@ -39,7 +40,7 @@
     @media ( min-width: #{ $screen-max }px ) {
         #{ $property }: #{$max}px;
     }
-    @media screen and (max-width: #{ $screen-max }px ) and (min-width: #{ $screen-min + 1 }px) {
+    @media screen and (max-width: #{ $screen-max - 1 }px ) and (min-width: #{ $screen-min + 1 }px) {
         #{$property}: calc-property($min, $max, $screen-min, $screen-max);
     }
     @media ( max-width: #{ $screen-min }px ) {
@@ -47,21 +48,52 @@
     }
 }
 
-/*
-Отключение стандартного оформления
-*/
+/**
+ * Отключение стандартного оформления
+ */
 @mixin appearance-none() {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
 }
 
-/*
-Установка тени к элементу
-- $value: значение
-*/
+/**
+ * Установка тени к элементу
+ * @param {string} $value - значение
+ */
 @mixin box-shadow($value) {
     -webkit-box-shadow: $value;
     -moz-box-shadow: $value;
     box-shadow: $value;
+}
+
+/**
+ * Управление выделением текста
+ * @param {string} $value - значение
+ */
+@mixin user-select($value) {
+    user-select: $value;
+    -webkit-user-select: $value;
+    -moz-user-select: $value;
+    -ms-user-select: $value;
+}
+
+/**
+ * Установка адаптивного свойства
+ * @param {string} $property - свойство
+ * @param {number} $value-s - значение на мобильном экране 
+ * @param {number} $value-m - значение на экране ноутбука 
+ * @param {number} $value-l - значение на экране компьютера
+ */
+@mixin values($property, $value-s, $value-m, $value-l) {
+    @include responsive-property($property, $value-s, $value-m);
+    @media ( min-width: #{ $screen-m }px ) {
+        @include responsive-property(
+            $property,
+            $value-m,
+            $value-l,
+            $screen-m,
+            $screen-l
+        );
+    }
 }

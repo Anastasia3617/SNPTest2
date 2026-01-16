@@ -2,7 +2,7 @@
 @use './_utils/mixins';
 @use 'sass:math';
 
-$font-size: 17;
+$font-size: 16;
 $font-size-l: 20;
 $step: 1.2;
 
@@ -11,17 +11,20 @@ $step: 1.2;
     @include mixins.responsive-property(font-size, $font-size, $font-size-l);
     line-height: 142%;
     font-family: 'Roboto', 'Arial', sans-serif;
-    color: $black;
     font-optical-sizing: auto;
     &_title {
         font-size: math.pow($step, 3) * 1rem;
         line-height: 122%;
+        letter-spacing: 0.02em;
     }
     &_small {
         font-size: math.pow($step, -1) * 1rem;
     }
     &_blue {
-        color: #1564a6;
+        color: $blue-dark;
+    }
+    &_white {
+        color: #ffffff;
     }
     &_gray {
         color: $gray;

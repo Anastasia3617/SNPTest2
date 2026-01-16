@@ -1,150 +1,57 @@
-import { getControls } from './utils';
+import { Constants } from '../index';
 
 /**
  * Класс управления списком задач
  */
-export const TodoListManager = {
+export class TodoList {
     /**
-     * Строки с задачами
+     * Конструктор
+     * @param {element} list - список
+     * @param {function} [updateInterface=null] - функция обновления интерфейса
      */
-    _itemTasks: [],
-
-    /**
-     * Количество задач ( all - все, active - в работе )
-     */
-    _count: { all: 0, active: 0 },
-
-    /**
-     * Фильтр ( значения: all - все,  active - в работе, completed - выполнено )
-     */
-    _filter: 'all',
-
-    /**
-     * Текст задачи до редактирования
-     */
-    _textOldEditTask: '',
+    constructor(list, updateInterface = null) {
+        this._itemTasks = []; // строки с задачами
+        this._count = { all: 0, active: 0 }; // количество задач ( all - все, active - в работе )
+        this._filter = 'all'; // фильтр ( значения: all - все,  active - в работе, completed - выполнено )
+        this._textOldEditTask = ''; // текст задачи до редактирования
+        this._itemTap = null; // строка с задачей, которую мы коснулись на сенсорном устройстве
+        this._listTasks = list; // список с задачами
+        this._liInfo = list.querySelector('.list__item_info'); // строка с информацией
+        this._updateInterface = updateInterface; // функция обновления интерфейса
+    }
 
     /**
-     * Строка с задачей, которую мы коснулись на сенсорном устройстве
+     * Геттер для количества задач
      */
-    _itemTap: null,
+    get count() {
+        return this._count;
+    }
 
     /**
-     * Селекторы элементов
+     * Геттер фильтра
      */
-    _selectors: {
-        spanActive: { selector: '#span-active' }, // текст "Осталось выполнить"
-        inputAddTask: { selector: '#input-add-task' }, // поле ввода новой задачи
-        listTasks: { selector: '#list-tasks' }, // список с задачами
-        liInfo: { selector: '#li-info' }, // строка с информацией
-        checkboxTasks: { selector: '#checkbox-tasks' }, // чекбокс "Выделить все задачи"
-        buttonDeleteCompleted: { selector: '#button-delete-completed' }, // кнопка "Удалить выполненные задачи"
-        containerСontrols: { selector: '#container-controls' }, // блок с элементами управления
-        filterRadioLabels: {
-            selector: '#filter-tasks .radio-buttons__text', // радиокнопки
-            isMulti: true,
-        },
-    },
-
-    /**
-     * Инициализация
-     */
-    init() {
-        // получаем элементы страницы
-        this._controls = getControls(this._selectors);
-
-        // добавление обработчиков
-        this._addEventListeners();
-
-        // устанавливаем фокус на поле ввода новой задачи
-        this._controls.inputAddTask.focus();
-    },
-
-    /**
-     * Добавление событий
-     */
-    _addEventListeners() {
-        const { _controls: controls } = this;
-
-        // Enter на поле ввода новой задачи
-        controls.inputAddTask.addEventListener('keydown', event => {
-            if (event.key === 'Enter') {
-                if (event.cancelable) {
-                    event.preventDefault();
-                }
-                this._addTask();
-            }
-        });
-
-        // изменение состояния чекбокса "Выделить все задачи"
-        controls.checkboxTasks.addEventListener(
-            'input',
-            this._handlerCheckboxAllTasksInput.bind(this),
-        );
-
-        // клик по кнопке "Удалить выполненные задачи"
-        controls.buttonDeleteCompleted.addEventListener(
-            'click',
-            this._handlerButtonDeleteCompletedTasksClick.bind(this),
-        );
-
-        // клик по фильтру
-        controls.filterRadioLabels.forEach(radio => {
-            radio.addEventListener(
-                'click',
-                this._handlerRadioLabelClick.bind(this),
-            );
-        });
-
-        // касание на сенсорном устройстве
-        document.addEventListener(
-            'touchstart',
-            this._handlerDocumentTouchstart.bind(this),
-        );
-
-        window.addEventListener('scroll', () => {
-            // фиксация шапки
-            if (window.scrollY > 263) {
-                controls.containerСontrols.classList.add(
-                    'todo__controls_fixed',
-                );
-                controls.containerСontrols.classList.add('wrapper');
-            } else {
-                controls.containerСontrols.classList.remove(
-                    'todo__controls_fixed',
-                );
-                controls.containerСontrols.classList.remove('wrapper');
-            }
-        });
-    },
+    get filter() {
+        return this._filter;
+    }
 
     /**
      * Добавление новой задачи
+     * @param {string} text - содержание задачи
      */
-    _addTask() {
-        const { _controls: controls, _count: count } = this;
-        const text = controls.inputAddTask.value;
+    addTask(text) {
+        const { _count: count } = this;
 
-        // если поле не пустое
-        if (text.trim() !== '') {
-            // обновляем количество задач
-            count.all += 1;
-            count.active += 1;
+        // обновляем количество задач
+        count.all += 1;
+        count.active += 1;
 
-            // добавляем строку
-            const item = this._addItem(text);
-            this._itemTasks.push(item);
+        // добавляем строку
+        const item = this._addItem(text);
+        this._itemTasks.unshift(item);
 
-            // чистим поле ввода
-            controls.inputAddTask.value = '';
-
-            // фильтруем новую строку
-            this._filterItems(item);
-
-            // обновляем элементы управления и блоки с информацией
-            this._updateInterface();
-        }
-    },
+        // фильтруем новую строку
+        this._filterItems(item);
+    }
 
     /**
      * Добавление строки с задачей
@@ -152,8 +59,6 @@ export const TodoListManager = {
      * @returns {element} - созданная строка
      */
     _addItem(text) {
-        const { _controls: controls, _count: count } = this;
-
         // строка
         const li = document.createElement('li');
         li.setAttribute('id', crypto.randomUUID());
@@ -165,6 +70,7 @@ export const TodoListManager = {
         li.addEventListener(
             'touchstart',
             this._handlerItemTouchStart.bind(this),
+            { passive: true },
         );
 
         // чекбокс
@@ -179,7 +85,7 @@ export const TodoListManager = {
 
         // содержание
         const span = document.createElement('span');
-        span.classList.add('list__text');
+        span.classList.add('list__text', 'input', 'input_transparent');
         span.textContent = text;
         span.addEventListener('blur', this._handlerTextTaskBlur.bind(this));
         span.addEventListener(
@@ -188,14 +94,9 @@ export const TodoListManager = {
         );
         li.appendChild(span);
 
-        // кнопка закрыть
+        // кнопка удалить
         const button = document.createElement('button');
-        button.classList.add(
-            'button-icon',
-            'list__button',
-            'button-icon_small',
-            'button-icon_grey',
-        );
+        button.classList.add('button', 'button_icon', 'list__button');
         button.setAttribute('title', 'Удалить задачу');
         button.addEventListener(
             'click',
@@ -204,15 +105,22 @@ export const TodoListManager = {
 
         // иконка кнопки
         const img = document.createElement('img');
-        img.classList.add('button-icon__image');
+        img.classList.add('button__image');
         img.setAttribute('src', 'assets/images/ic-close.svg');
         img.setAttribute('alt', 'Удалить задачу');
         button.appendChild(img);
         li.appendChild(button);
 
-        controls.listTasks.appendChild(li);
+        // вставка в начало списка
+        const { firstChild } = this._listTasks;
+        if (firstChild) {
+            this._listTasks.insertBefore(li, firstChild);
+        } else {
+            this._listTasks.appendChild(li);
+        }
+
         return li;
-    },
+    }
 
     /**
      * Обработчик двойного клика по строке с задачей
@@ -223,7 +131,7 @@ export const TodoListManager = {
         if (target && target.getAttribute('type') !== 'checkbox') {
             this._setModeEditTask({ item: target.closest('.list__item') });
         }
-    },
+    }
 
     /**
      * Обработчик снятия фокуса с элемента с текстом
@@ -231,33 +139,33 @@ export const TodoListManager = {
      */
     _handlerTextTaskBlur(event) {
         this._setModeEditTask({ nodeText: event.target, isEdit: false });
-    },
+    }
 
     /**
      * Обработчик нажатия "Enter" или "Escape" на элементе с текстом
      * @param {object} event - событие
      */
     _handlerTextTaskKeydown(event) {
-        const nodeText = event.target;
-        if (nodeText) {
-            // если нажали "Escape", то изменения не сохраняем
-            if (event.key === 'Escape' || event.keyCode === 27) {
-                nodeText.innerText = this._textOldEditTask;
-            }
-            if (
-                event.key === 'Escape' ||
-                event.keyCode === 27 ||
-                (event.key === 'Enter' && event.ctrlKey)
-            ) {
-                if (event.cancelable) {
-                    event.preventDefault();
-                }
+        const { target: nodeText } = event;
+        if (!nodeText) return;
 
-                // выходим из режима редактирования
-                this._setModeEditTask({ nodeText, isEdit: false });
-            }
+        const { key, keyCode } = event;
+
+        // если нажали "Escape", то изменения не сохраняем
+        if (key === 'Escape' || keyCode === 27) {
+            nodeText.innerText = this._textOldEditTask;
         }
-    },
+        if (
+            key === 'Escape' ||
+            keyCode === 27 ||
+            (key === 'Enter' && event.ctrlKey)
+        ) {
+            if (event.cancelable) event.preventDefault();
+
+            // выходим из режима редактирования
+            this._setModeEditTask({ nodeText, isEdit: false });
+        }
+    }
 
     /**
      * Установка и сброс режима редактирования у задачи
@@ -268,30 +176,29 @@ export const TodoListManager = {
      */
     _setModeEditTask({ nodeText, item, isEdit = true }) {
         // получаем строку и элемент, содержащий текст задачи
-        const itemTask =
-            item || (nodeText ? nodeText.closest('.list__item') : null);
+        const itemTask = item || nodeText?.closest('.list__item') || null;
         const nodeTextTask =
-            nodeText ||
-            (itemTask ? itemTask.querySelector('.list__text') : null);
-        if (itemTask && nodeTextTask) {
-            // режим редактирования
-            if (isEdit) {
-                itemTask.classList.add('list__item_edit');
-                nodeTextTask.setAttribute('contenteditable', 'true');
-                nodeTextTask.focus();
+            nodeText || itemTask?.querySelector('.list__text') || null;
 
-                // запоминаем текст
-                this._textOldEditTask = nodeTextTask.innerText;
-            } else {
-                // сброс режима редактирования
-                itemTask.classList.remove('list__item_edit');
-                nodeTextTask.removeAttribute('contenteditable');
-                nodeTextTask.blur();
-                this._cleanContentEditable(nodeTextTask);
-                this._textOldEditTask = '';
-            }
+        if (!itemTask || !nodeTextTask) return;
+
+        // режим редактирования
+        if (isEdit) {
+            itemTask.classList.add('list__item_edit');
+            nodeTextTask.setAttribute('contenteditable', 'true');
+            nodeTextTask.focus();
+
+            // запоминаем текст
+            this._textOldEditTask = nodeTextTask.innerText;
+        } else {
+            // сброс режима редактирования
+            itemTask.classList.remove('list__item_edit');
+            nodeTextTask.removeAttribute('contenteditable');
+            nodeTextTask.blur();
+            this._cleanContentEditable(nodeTextTask);
+            this._textOldEditTask = '';
         }
-    },
+    }
 
     /**
      * Удаление пустых текстовых узлов и переносов строк, расположенных в конце текста
@@ -306,7 +213,7 @@ export const TodoListManager = {
         ) {
             nodeText.removeChild(nodeText.lastChild);
         }
-    },
+    }
 
     /**
      * Обработчик касания строки с задачей
@@ -314,45 +221,45 @@ export const TodoListManager = {
      */
     _handlerItemTouchStart(event) {
         const { target } = event;
+        if (!target) return;
         const { _itemTap: itemTap } = this;
-        const itemTask = target ? target.closest('.list__item') : null;
-        const tagName = target ? target.tagName : null;
+
+        const { tagName } = target;
         const names = ['INPUT', 'IMG', 'BUTTON'];
-        if (tagName && !names.includes(tagName)) {
-            event.stopPropagation();
-        }
-        if (itemTask) {
-            // если мы до этого касались другой строки, то у нее сбрасываем режим редактирования
-            if (
-                itemTap &&
-                itemTap.getAttribute('id') !== itemTask.getAttribute('id')
-            ) {
-                this._clearItemTap();
-            }
+        if (!names.includes(tagName)) event.stopPropagation();
 
-            if (!itemTask.singleTapTimer) {
-                // одиночный тап
-                itemTask.singleTapTimer = setTimeout(() => {
-                    // устанавливаем ховер
-                    this._itemTap = itemTask;
-                    itemTask.classList.add('list__item_hover');
-                    itemTask.singleTapTimer = null;
-                }, 300);
-            } else {
-                // двойной тап
-                if (event.cancelable) {
-                    event.preventDefault();
-                }
-                clearTimeout(itemTask.singleTapTimer);
+        const itemTask = target.closest('.list__item');
+        if (!itemTask) return;
+
+        // если мы до этого касались другой строки, то у нее сбрасываем режим редактирования
+        if (
+            itemTap &&
+            itemTap.getAttribute('id') !== itemTask.getAttribute('id')
+        ) {
+            this._clearItemTap();
+        }
+
+        if (!itemTask.singleTapTimer) {
+            // одиночный тап
+            itemTask.singleTapTimer = setTimeout(() => {
+                // устанавливаем ховер
+                this._itemTap = itemTask;
+                itemTask.classList.add('list__item_hover');
                 itemTask.singleTapTimer = null;
+            }, Constants.SCROLL_Y_PANEL);
+        } else {
+            // двойной тап
+            if (event.cancelable) event.preventDefault();
 
-                // устанавливаем режим редактирования
-                if (tagName && !names.includes(tagName)) {
-                    this._setModeEditTask({ item: itemTask });
-                }
+            clearTimeout(itemTask.singleTapTimer);
+            itemTask.singleTapTimer = null;
+
+            // устанавливаем режим редактирования
+            if (!names.includes(tagName)) {
+                this._setModeEditTask({ item: itemTask });
             }
         }
-    },
+    }
 
     /**
      * Сброс ховера и режима редактирования у сохраненной строки с задачей ( на сенсорном устройстве )
@@ -361,42 +268,39 @@ export const TodoListManager = {
         this._itemTap.classList.remove('list__item_hover');
         this._setModeEditTask({ item: this._itemTap, isEdit: false });
         this._itemTap = null;
-    },
+    }
 
     /**
-     * Обработчик касания на сенсорном устройстве
-     * @param {object} event - событие
+     * Сброс фокуса с задачи
+     * @param {element} node - элемент, на который мы нажали
      */
-    _handlerDocumentTouchstart(event) {
-        const { target } = event;
-        if (target && this._itemTap && !this._itemTap.contains(target)) {
+    blurTask(node) {
+        if (this._itemTap && !this._itemTap.contains(node)) {
             this._clearItemTap();
         }
-    },
+    }
 
     /**
      * Обработчик изменения состояния чекбокса у задачи
      * @param {object} event - событие
      */
     _handlerCheckboxTaskInput(event) {
-        const { _count: count } = this;
-        const checkbox = event.target;
-        const itemTask = checkbox ? checkbox.closest('.list__item') : null;
-        if (itemTask) {
-            checkbox.checked ? count.active-- : count.active++;
-            this._changeStatusTask(checkbox.checked, itemTask);
-        }
-    },
+        const { target: checkbox } = event;
+        const itemTask = checkbox?.closest('.list__item');
+        if (!itemTask) return;
+        this._count.active += checkbox.checked ? -1 : 1;
+        this._changeStatusTask(checkbox.checked, itemTask);
+    }
 
     /**
-     * Обработчик изменения состояния чекбокса "Выделить все задачи"
+     * Переключение статуса всех задач
+     * @param {boolean} checked - состояние чекбокса
      */
-    _handlerCheckboxAllTasksInput() {
-        const { _controls: controls, _count: count } = this;
-        const checked = controls.checkboxTasks.checked;
+    setStatusAllTasks(checked) {
+        const { _count: count } = this;
         count.active = checked ? 0 : count.all;
         this._changeStatusTask(checked);
-    },
+    }
 
     /**
      * Изменение статуса задачи
@@ -419,18 +323,16 @@ export const TodoListManager = {
             // если строка не была передана в функцию, то изменяем состояние чекбокса у всех задач
             if (!itemTask) {
                 const checkbox = item.querySelector('.checkbox');
-                if (checkbox) {
-                    checkbox.checked = checked;
-                }
+                if (checkbox) checkbox.checked = checked;
             }
         });
 
         // обновляем элементы управления и блоки с информацией
-        this._updateInterface();
+        this._updateInterface?.();
 
         // фильтруем строку
         this._filterItems(itemTask);
-    },
+    }
 
     /**
      * Обработчик клика на кнопку "Удалить задачу"
@@ -438,23 +340,23 @@ export const TodoListManager = {
      */
     _handlerButtonDeleteTaskClick(event) {
         const { _count: count } = this;
-        const button = event.target;
-        const itemTask = button ? button.closest('.list__item') : null;
-        if (itemTask) {
-            // обновляем количество задач
-            if (!itemTask.classList.contains('list__item_checked')) {
-                count.active -= 1;
-            }
-            this._deleteTask(itemTask);
+        const { target: button } = event;
+        const itemTask = button?.closest('.list__item');
+        if (!itemTask) return;
+
+        // обновляем количество задач
+        if (!itemTask.classList.contains('list__item_checked')) {
+            count.active -= 1;
         }
-    },
+        this._deleteTask(itemTask);
+    }
 
     /**
-     * Обработчик клика на кнопку "Удалить выполненные задачи"
+     * Удаление выполненных задач
      */
-    _handlerButtonDeleteCompletedTasksClick() {
+    deleteCompletedTasks() {
         this._deleteTask();
-    },
+    }
 
     /**
      * Удаление задачи
@@ -479,49 +381,42 @@ export const TodoListManager = {
         );
 
         // обновляем элементы управления и блоки с информацией
-        this._updateInterface();
-    },
+        this._updateInterface?.();
+
+        // обновляем список
+        this._updateList();
+    }
 
     /**
-     * Обновление элементов управления и блоков с информацией
+     * Установка фильтра
+     * @param {string} filter - фильтр
      */
-    _updateInterface() {
-        const { _controls: controls, _count: count } = this;
-
-        // текст "Осталось выполнить"
-        controls.spanActive.textContent = count.active;
-
-        // блок с элементами управления
-        controls.containerСontrols.style.display =
-            count.all > 0 ? 'flex' : 'none';
-
-        // чекбокс "Выделить все задачи"
-        controls.checkboxTasks.checked = count.active === 0;
-
-        // кнопка "Удалить выполненные задачи"
-        controls.buttonDeleteCompleted.style.display =
-            count.all - count.active > 0 ? 'flex' : 'none';
-
-        // строка с информацией
-        controls.liInfo.style.display = count.all > 0 ? 'none' : 'flex';
-    },
+    setFilter(filter) {
+        this._filter = filter;
+        this._filterItems();
+    }
 
     /**
-     * Обработчик клика по фильтру
-     * @param {object} event - событие
+     * Получение функции фильтрации
      */
-    _handlerRadioLabelClick(event) {
-        const label = event.target;
-        if (label) {
-            const filter = label.getAttribute('filter');
-
-            // если фильтр поменялся
-            if (this._filter !== filter) {
-                this._filter = filter;
-                this._filterItems();
-            }
-        }
-    },
+    _getFilterFunction() {
+        const filters = {
+            all: item => (item.style.display = 'flex'),
+            active: item =>
+                (item.style.display = item.classList.contains(
+                    'list__item_checked',
+                )
+                    ? 'none'
+                    : 'flex'),
+            completed: item =>
+                (item.style.display = item.classList.contains(
+                    'list__item_checked',
+                )
+                    ? 'flex'
+                    : 'none'),
+        };
+        return filters[this._filter] || filters.all;
+    }
 
     /**
      * Фильтрация задач
@@ -529,37 +424,36 @@ export const TodoListManager = {
      */
     _filterItems(itemTask = null) {
         // функция фильтрации
-        let filterFunct;
-        switch (this._filter) {
-            case 'all': {
-                filterFunct = item => (item.style.display = 'flex');
-                break;
-            }
-            case 'active': {
-                filterFunct = item =>
-                    (item.style.display = item.classList.contains(
-                        'list__item_checked',
-                    )
-                        ? 'none'
-                        : 'flex');
-                break;
-            }
-            case 'completed': {
-                filterFunct = item =>
-                    (item.style.display = item.classList.contains(
-                        'list__item_checked',
-                    )
-                        ? 'flex'
-                        : 'none');
-                break;
-            }
-            default: {
-                break;
-            }
-        }
+        let filterFunct = this._getFilterFunction();
 
         // если строка не была передана в функцию, то фильтруем все задачи
         const items = itemTask ? [itemTask] : this._itemTasks;
         items.forEach(item => filterFunct(item));
-    },
-};
+        this._updateList();
+    }
+
+    /**
+     * Обновление отображения списка
+     */
+    _updateList() {
+        let last = null;
+
+        // поиск последней строки
+        this._itemTasks.forEach(item => {
+            item.classList.remove('list__item_last');
+            if (item.style.display !== 'none') {
+                last = item;
+            }
+        });
+        if (last) {
+            // добавляем стилевое оформление последней строки
+            last.classList.add('list__item_last');
+
+            // прячем строку-заглушку
+            this._liInfo.style.display = 'none';
+        } else {
+            // если нет строк в списке, то отображаем строку-заглушку
+            this._liInfo.style.display = 'flex';
+        }
+    }
+}

@@ -1,22 +1,219 @@
 @use './_utils/variables' as *;
 @use './_utils/mixins';
 
+// высота панели
+$panel-height: 180;
+$panel-height-s: 116;
+
+// страница
 .page {
     scroll-behavior: smooth;
+    &__body {
+        margin: 0;
+        background: #f9f7f4;
+    }
+    &__header {
+        margin-bottom: 3rem;
+    }
+    &__main {
+        position: relative;
+        @include mixins.responsive-property(
+            padding-top,
+            $panel-height-s,
+            $panel-height
+        );
+    }
+    &__panel {
+        @include mixins.responsive-property(
+            height,
+            $panel-height-s,
+            $panel-height
+        );
+    }
+    &__list {
+        margin-top: 0.7rem;
+    }
+    &__footer {
+        margin-top: 0.7rem;
+    }
 }
 
-.body {
-    margin: 0;
-    box-sizing: border-box;
-    padding: 2% 0;
-    background: #f9f7f4;
-    &__todo {
-        margin: 0 auto;
+// шапка
+.header {
+    background-color: $blue;
+    color: #ffffff;
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 3rem 0;
+        gap: 2rem;
+    }
+    &__title {
+        margin: 0;
+    }
+}
+
+// панель с кнопками
+.panel {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        @include mixins.responsive-property(column-gap, 8, 20);
+    }
+
+    // радиокнопки
+    &__radio {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        @include mixins.responsive-property('column-gap', 10, 20);
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        @include mixins.values(max-width, 340, 918, 900);
+    }
+
+    // кнопки
+    &__buttons {
+        display: flex;
+        @include mixins.responsive-property('column-gap', 10, 20);
+    }
+    &__button-up {
+        display: none;
+    }
+
+    // фиксированная панель
+    &_fixed {
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        width: 100%;
+        transition: opacity 0.3s ease;
+        background: rgba(66, 170, 255, 0.6);
+        backdrop-filter: blur(54px);
+        height: auto;
+        .panel__inner {
+            flex-direction: row;
+            padding-top: 0.7rem;
+            padding-bottom: 0.7rem;
+            @include mixins.responsive-property(padding-left, 2, 0);
+        }
+
+        // радиокнопки
+        .panel__radio {
+            width: fit-content;
+            gap: 0;
+        }
+        .radio-button {
+            max-width: 110px;
+            @include mixins.responsive-property(padding-top, 5, 8);
+            @include mixins.responsive-property(padding-bottom, 5, 8);
+            @include mixins.responsive-property(padding-left, 8, 20);
+            @include mixins.responsive-property(padding-right, 8, 20);
+            box-shadow: none;
+            border: 1px solid $gray-light;
+            border-radius: 0;
+            &:first-child {
+                border-right: none;
+            }
+            &:last-child {
+                border-left: none;
+            }
+            &__text,
+            .progress,
+            &__number {
+                display: none;
+            }
+            &__title {
+                margin: auto;
+            }
+            @media (hover: hover) {
+                &:hover {
+                    background-color: $yellow;
+                }
+            }
+        }
+        .wrapper {
+            &_selected {
+                background-color: $blue;
+                color: #ffffff;
+            }
+            &_hover:hover {
+                @include mixins.box-shadow(none);
+            }
+        }
+
+        // кнопки
+        .panel__buttons {
+            @include mixins.responsive-property(column-gap, 8, 20);
+        }
+        .button {
+            padding-top: 0.3rem;
+            padding-bottom: 0.3rem;
+            @include mixins.responsive-property(padding-left, 8, 14);
+            @include mixins.responsive-property(padding-right, 8, 14);
+            &__text {
+                display: none;
+            }
+        }
+        .panel__button-up {
+            display: flex;
+        }
+    }
+}
+
+// футер
+.footer {
+    text-align: center;
+    font-style: italic;
+    padding: 0.5rem 2rem 1rem 2rem;
+    &__text {
+        color: $blue-dark;
+        margin: 0;
     }
 }
 
 // рабочая область
+.work-area {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    @include mixins.values(max-width, 340, 918, 1510);
+    &_list {
+        @include mixins.values(max-width, 360, 918, 1510);
+    }
+}
+
+// оболочка с тенью
 .wrapper {
-    width: 98%;
-    max-width: 1800px;
+    @include mixins.box-shadow(0px 2px 5px 1px rgba(34, 60, 80, 0.2));
+    border-radius: 2px;
+    background-color: #ffffff;
+    &_selected {
+        border-color: rgb(0, 120, 212, 0.5);
+        @include mixins.box-shadow(0px 0px 5px 1px rgba(0, 120, 212, 0.7));
+    }
+    &_hover {
+        @media (hover: hover) {
+            &:hover {
+                cursor: pointer;
+                border-color: rgb(191, 164, 24, 0.5);
+                @include mixins.box-shadow(
+                    0px 0px 5px 1px rgba(191, 164, 24, 0.7)
+                );
+            }
+        }
+    }
+}
+
+// скрытый элемент
+.hidden {
+    opacity: 0;
+    pointer-events: none;
 }

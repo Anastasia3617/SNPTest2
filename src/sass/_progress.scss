@@ -1,0 +1,26 @@
+@use './_utils/variables' as *;
+
+// индикатор
+.progress {
+    width: 100%;
+    height: 9px;
+    background-color: #efefef;
+    border: 1px solid #d0d0d0;
+    border-radius: 10px;
+    overflow: hidden;
+    &__value {
+        transition: width 0.2s ease;
+        height: 100%;
+        background-color: #36a1f2;
+    }
+    &_green {
+        .progress__value {
+            background-color: #0d9466;
+        }
+    }
+    &_yellow {
+        .progress__value {
+            background-color: $yellow;
+        }
+    }
+}

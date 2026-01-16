@@ -5,7 +5,7 @@
  *                             isMulti - признак получения коллекции элементов, по умолчанию false
  * @returns {object} - объект вида кеу: element || [elements]
  */
-export function getControls(selectors) {
+export const getControls = selectors => {
     const controls = {};
     Object.entries(selectors).forEach(
         ([key, { selector, isMulti = false }]) => {
@@ -14,4 +14,4 @@ export function getControls(selectors) {
         },
     );
     return controls;
-}
+};

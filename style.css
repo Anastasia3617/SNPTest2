@@ -261,12 +261,15 @@
   list-style-type: none;
   padding: 0.5rem;
   box-sizing: border-box;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 .list__item {
   position: relative;
   display: flex;
   align-items: center;
   border-bottom: 1px solid rgba(177, 177, 177, 0.5);
+  touch-action: manipulation;
 }
 .list__item_checked .list__text {
   text-decoration: line-through;

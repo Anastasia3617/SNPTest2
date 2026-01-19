@@ -38,6 +38,7 @@
  */
 .button {
   background-color: #ffffff;
+  color: #1b1f2b;
   border: 1px solid #b1b1b1;
   transition: background-color 0.2s ease, filter 0.2s ease, opacity 0.4s ease;
   padding: 0.4rem 0.9rem;

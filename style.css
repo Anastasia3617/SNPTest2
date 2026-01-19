@@ -38,7 +38,7 @@
  */
 .button {
   background-color: #ffffff;
-  border: 1px solid #b1b1b1;
+  border: 1px solid rgba(177, 177, 177, 0.9);
   transition: background-color 0.2s ease, filter 0.2s ease, opacity 0.4s ease;
   padding: 0.9rem;
 }
@@ -100,7 +100,11 @@
 }
 .button__image {
   width: 1rem;
-  height: auto;
+  height: 1rem;
+  background-image: url("assets/images/ic-delete.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 1.2rem;
 }
 .button__text {
   color: #1b1f2b;
@@ -551,12 +555,12 @@
 }
 @media screen and (max-width: 1023px) and (min-width: 361px) {
   .page__main {
-    padding-top: calc(130px + 0.0903614458 * (100vw - 360px));
+    padding-top: calc(135px + 0.0828313253 * (100vw - 360px));
   }
 }
 @media (max-width: 360px) {
   .page__main {
-    padding-top: 130px;
+    padding-top: 135px;
   }
 }
 @media (min-width: 1024px) {
@@ -566,16 +570,16 @@
 }
 @media screen and (max-width: 1023px) and (min-width: 361px) {
   .page__panel {
-    height: calc(130px + 0.0903614458 * (100vw - 360px));
+    height: calc(135px + 0.0828313253 * (100vw - 360px));
   }
 }
 @media (max-width: 360px) {
   .page__panel {
-    height: 130px;
+    height: 135px;
   }
 }
 .page__list {
-  margin-top: 0.7rem;
+  margin-top: 0.8rem;
 }
 .page__footer {
   margin-top: 0.7rem;
@@ -583,6 +587,7 @@
 
 .header {
   background-color: #42aaff;
+  background-color: rgb(34, 136, 34);
   color: #ffffff;
 }
 .header__inner {

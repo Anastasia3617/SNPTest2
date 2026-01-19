@@ -138,9 +138,37 @@
 .checkbox:checked::before {
   opacity: 1;
 }
+@media (min-width: 1024px) {
+  .checkbox_circular {
+    height: 24px;
+  }
+}
+@media screen and (max-width: 1023px) and (min-width: 361px) {
+  .checkbox_circular {
+    height: calc(38px + -0.0210843373 * (100vw - 360px));
+  }
+}
+@media (max-width: 360px) {
+  .checkbox_circular {
+    height: 38px;
+  }
+}
+@media (min-width: 1024px) {
+  .checkbox_circular {
+    width: 24px;
+  }
+}
+@media screen and (max-width: 1023px) and (min-width: 361px) {
+  .checkbox_circular {
+    width: calc(38px + -0.0210843373 * (100vw - 360px));
+  }
+}
+@media (max-width: 360px) {
+  .checkbox_circular {
+    width: 38px;
+  }
+}
 .checkbox_circular {
-  width: 24px;
-  height: 24px;
   opacity: 1;
   border-radius: 50%;
   border: 1px solid #b1b1b1;
@@ -154,8 +182,20 @@
     box-shadow: 0px 0px 5px 1px rgba(191, 164, 24, 0.7);
   }
 }
-.checkbox_circular::before {
-  background-size: 18px;
+@media (min-width: 1024px) {
+  .checkbox_circular::before {
+    background-size: 18px;
+  }
+}
+@media screen and (max-width: 1023px) and (min-width: 361px) {
+  .checkbox_circular::before {
+    background-size: calc(28px + -0.015060241 * (100vw - 360px));
+  }
+}
+@media (max-width: 360px) {
+  .checkbox_circular::before {
+    background-size: 28px;
+  }
 }
 .checkbox_circular:checked {
   border-color: #11a66a;
@@ -411,32 +451,32 @@
 }
 @media (min-width: 1024px) {
   .page__main {
-    padding-top: 180px;
+    padding-top: 190px;
   }
 }
 @media screen and (max-width: 1023px) and (min-width: 361px) {
   .page__main {
-    padding-top: calc(116px + 0.0963855422 * (100vw - 360px));
+    padding-top: calc(130px + 0.0903614458 * (100vw - 360px));
   }
 }
 @media (max-width: 360px) {
   .page__main {
-    padding-top: 116px;
+    padding-top: 130px;
   }
 }
 @media (min-width: 1024px) {
   .page__panel {
-    height: 180px;
+    height: 190px;
   }
 }
 @media screen and (max-width: 1023px) and (min-width: 361px) {
   .page__panel {
-    height: calc(116px + 0.0963855422 * (100vw - 360px));
+    height: calc(130px + 0.0903614458 * (100vw - 360px));
   }
 }
 @media (max-width: 360px) {
   .page__panel {
-    height: 116px;
+    height: 130px;
   }
 }
 .page__list {
@@ -447,7 +487,7 @@
 }
 
 .header {
-  background-color: #42aaff;
+  background-color: rgb(34, 136, 34);
   color: #ffffff;
 }
 .header__inner {

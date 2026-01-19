@@ -256,7 +256,39 @@
 
 .input {
   width: 100%;
-  padding: 0.55rem 0.8rem;
+  padding: 0.8rem;
+}
+@media (min-width: 1024px) {
+  .input {
+    padding-top: 11px;
+  }
+}
+@media screen and (max-width: 1023px) and (min-width: 361px) {
+  .input {
+    padding-top: calc(15px + -0.0060240964 * (100vw - 360px));
+  }
+}
+@media (max-width: 360px) {
+  .input {
+    padding-top: 15px;
+  }
+}
+@media (min-width: 1024px) {
+  .input {
+    padding-bottom: 11px;
+  }
+}
+@media screen and (max-width: 1023px) and (min-width: 361px) {
+  .input {
+    padding-bottom: calc(15px + -0.0060240964 * (100vw - 360px));
+  }
+}
+@media (max-width: 360px) {
+  .input {
+    padding-bottom: 15px;
+  }
+}
+.input {
   box-sizing: border-box;
   background-color: transparent;
   border: 1px solid #ffffff;
@@ -367,36 +399,6 @@
   pointer-events: none;
   flex: 1;
   overflow: hidden;
-}
-@media (min-width: 1024px) {
-  .list__text {
-    padding-top: 11px;
-  }
-}
-@media screen and (max-width: 1023px) and (min-width: 361px) {
-  .list__text {
-    padding-top: calc(15px + -0.0060240964 * (100vw - 360px));
-  }
-}
-@media (max-width: 360px) {
-  .list__text {
-    padding-top: 15px;
-  }
-}
-@media (min-width: 1024px) {
-  .list__text {
-    padding-bottom: 11px;
-  }
-}
-@media screen and (max-width: 1023px) and (min-width: 361px) {
-  .list__text {
-    padding-bottom: calc(15px + -0.0060240964 * (100vw - 360px));
-  }
-}
-@media (max-width: 360px) {
-  .list__text {
-    padding-bottom: 15px;
-  }
 }
 .list__button {
   position: absolute;
@@ -518,6 +520,7 @@
 
 .header {
   background-color: #42aaff;
+  background-color: rgb(34, 136, 34);
   color: #ffffff;
 }
 .header__inner {

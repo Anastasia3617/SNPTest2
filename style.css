@@ -115,9 +115,11 @@
   border-radius: 4px;
   transition: all 0.2s ease;
 }
-.checkbox:hover {
-  background-color: #9e8706;
-  cursor: pointer;
+@media (hover: hover) {
+  .checkbox:hover {
+    background-color: #9e8706;
+    cursor: pointer;
+  }
 }
 .checkbox::before {
   content: "";
@@ -144,11 +146,13 @@
   border: 1px solid #b1b1b1;
   background-color: transparent;
 }
-.checkbox_circular:hover {
-  background-color: transparent;
-  -webkit-box-shadow: 0px 0px 5px 1px rgba(191, 164, 24, 0.7);
-  -moz-box-shadow: 0px 0px 5px 1px rgba(191, 164, 24, 0.7);
-  box-shadow: 0px 0px 5px 1px rgba(191, 164, 24, 0.7);
+@media (hover: hover) {
+  .checkbox_circular:hover {
+    background-color: transparent;
+    -webkit-box-shadow: 0px 0px 5px 1px rgba(191, 164, 24, 0.7);
+    -moz-box-shadow: 0px 0px 5px 1px rgba(191, 164, 24, 0.7);
+    box-shadow: 0px 0px 5px 1px rgba(191, 164, 24, 0.7);
+  }
 }
 .checkbox_circular::before {
   background-size: 18px;
@@ -443,7 +447,7 @@
 }
 
 .header {
-  background-color: rgb(34, 136, 34);
+  background-color: #42aaff;
   color: #ffffff;
 }
 .header__inner {

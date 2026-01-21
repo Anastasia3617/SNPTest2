@@ -723,10 +723,6 @@
   padding: 0.9rem 0.3rem;
   box-sizing: border-box;
 }
-.panel_fixed .work-area {
-  width: auto;
-  margin: 0;
-}
 .panel_fixed .panel__radio {
   width: fit-content;
 }

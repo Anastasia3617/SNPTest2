@@ -6,6 +6,8 @@
     list-style-type: none;
     padding: 0.5rem;
     box-sizing: border-box;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
 
     // пункт списка
     &__item {
@@ -13,6 +15,7 @@
         display: flex;
         align-items: center;
         border-bottom: 1px solid rgba(177, 177, 177, 0.5);
+        touch-action: manipulation;
         &_checked {
             .list__text {
                 text-decoration: line-through;
@@ -68,6 +71,9 @@
             justify-content: center;
             border-bottom: none;
             box-sizing: border-box;
+            padding: 0.8rem;
+            @include mixins.responsive-property(padding-top, 15, 11);
+            @include mixins.responsive-property(padding-bottom, 15, 11);
         }
 
         &_last {

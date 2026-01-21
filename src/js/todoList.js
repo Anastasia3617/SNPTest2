@@ -138,7 +138,24 @@ export class TodoList {
      * @param {object} event - событие
      */
     _handlerTextTaskBlur(event) {
-        this._setModeEditTask({ nodeText: event.target, isEdit: false });
+        const { target: nodeTextTask } = event;
+        if (!nodeTextTask) return;
+
+        this._setModeEditTask({ nodeText: nodeTextTask, isEdit: false });
+
+        // если нет текста, то удаляем задачу
+        const text = nodeTextTask.innerText.trim();
+        if (!text) {
+            const itemTask = nodeTextTask.closest('.list__item') || null;
+            if (!itemTask) return;
+
+            // обновляем количество задач
+            if (!itemTask.classList.contains('list__item_checked')) {
+                this._count.active -= 1;
+            }
+
+            this._deleteTask(itemTask);
+        }
     }
 
     /**
@@ -222,16 +239,12 @@ export class TodoList {
     _handlerItemTouchStart(event) {
         const { target } = event;
         if (!target) return;
-        const { _itemTap: itemTap } = this;
-
-        const { tagName } = target;
-        const names = ['INPUT', 'IMG', 'BUTTON'];
-        if (!names.includes(tagName)) event.stopPropagation();
 
         const itemTask = target.closest('.list__item');
         if (!itemTask) return;
 
-        // если мы до этого касались другой строки, то у нее сбрасываем режим редактирования
+        // сбрасываем предыдущий элемент
+        const { _itemTap: itemTap } = this;
         if (
             itemTap &&
             itemTap.getAttribute('id') !== itemTask.getAttribute('id')
@@ -239,15 +252,15 @@ export class TodoList {
             this._clearItemTap();
         }
 
-        if (!itemTask.singleTapTimer) {
-            // одиночный тап
-            itemTask.singleTapTimer = setTimeout(() => {
-                // устанавливаем ховер
-                this._itemTap = itemTask;
-                itemTask.classList.add('list__item_hover');
-                itemTask.singleTapTimer = null;
-            }, Constants.SCROLL_Y_PANEL);
-        } else {
+        this._itemTap = itemTask;
+        itemTask.classList.add('list__item_hover');
+
+        const { tagName } = target;
+        if (['INPUT', 'IMG', 'BUTTON'].includes(tagName)) return;
+
+        event.stopPropagation();
+
+        if (itemTask.singleTapTimer) {
             // двойной тап
             if (event.cancelable) event.preventDefault();
 
@@ -255,9 +268,12 @@ export class TodoList {
             itemTask.singleTapTimer = null;
 
             // устанавливаем режим редактирования
-            if (!names.includes(tagName)) {
-                this._setModeEditTask({ item: itemTask });
-            }
+            this._setModeEditTask({ item: itemTask });
+        } else {
+            // одиночный тап — запускаем таймер
+            itemTask.singleTapTimer = setTimeout(() => {
+                itemTask.singleTapTimer = null;
+            }, Constants.SCROLL_Y_PANEL);
         }
     }
 

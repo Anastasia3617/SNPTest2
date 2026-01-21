@@ -2,8 +2,8 @@
 @use './_utils/mixins';
 
 // высота панели
-$panel-height: 180;
-$panel-height-s: 116;
+$panel-height: 190;
+$panel-height-s: 135;
 
 // страница
 .page {
@@ -31,7 +31,7 @@ $panel-height-s: 116;
         );
     }
     &__list {
-        margin-top: 0.7rem;
+        margin-top: 0.8rem;
     }
     &__footer {
         margin-top: 0.7rem;
@@ -95,36 +95,33 @@ $panel-height-s: 116;
         z-index: 1000;
         width: 100%;
         transition: opacity 0.3s ease;
-        background: rgba(66, 170, 255, 0.6);
+        background: rgb(243, 239, 232);
+        @include mixins.box-shadow(0px 2px 2px -2px rgba(34, 60, 80, 0.2));
         backdrop-filter: blur(54px);
         height: auto;
         .panel__inner {
             flex-direction: row;
-            padding-top: 0.7rem;
-            padding-bottom: 0.7rem;
-            @include mixins.responsive-property(padding-left, 2, 0);
+            padding: 0.9rem 0.3rem;
+            box-sizing: border-box;
+        }
+        .work-area {
+            width: auto;
+            margin: 0;
         }
 
         // радиокнопки
         .panel__radio {
             width: fit-content;
-            gap: 0;
+            @include mixins.responsive-property(gap, 0, 7);
+            margin: 0;
+            grid-template-columns: 0.5fr 1fr 1fr;
         }
         .radio-button {
-            max-width: 110px;
-            @include mixins.responsive-property(padding-top, 5, 8);
-            @include mixins.responsive-property(padding-bottom, 5, 8);
-            @include mixins.responsive-property(padding-left, 8, 20);
-            @include mixins.responsive-property(padding-right, 8, 20);
+            padding: 0.2em;
             box-shadow: none;
-            border: 1px solid $gray-light;
+            background: transparent;
+            border: none;
             border-radius: 0;
-            &:first-child {
-                border-right: none;
-            }
-            &:last-child {
-                border-left: none;
-            }
             &__text,
             .progress,
             &__number {
@@ -133,37 +130,84 @@ $panel-height-s: 116;
             &__title {
                 margin: auto;
             }
-            @media (hover: hover) {
-                &:hover {
-                    background-color: $yellow;
-                }
-            }
         }
         .wrapper {
-            &_selected {
-                background-color: $blue;
-                color: #ffffff;
+            &::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0.1em;
+                height: 1px;
+                background-color: transparent;
+                transition: background-color 0.3s ease;
             }
-            &_hover:hover {
-                @include mixins.box-shadow(none);
+            @media (hover: hover) {
+                &_hover:hover {
+                    @include mixins.box-shadow(none);
+                    &::after {
+                        background-color: $black;
+                    }
+                }
+            }
+            &_selected {
+                color: $blue-dark;
+                &::after {
+                    background-color: $blue-dark;
+                }
+                @media (hover: hover) {
+                    &:hover::after {
+                        background-color: $blue-dark;
+                    }
+                }
             }
         }
 
         // кнопки
         .panel__buttons {
-            @include mixins.responsive-property(column-gap, 8, 20);
+            flex-direction: row-reverse;
+            @include mixins.responsive-property(column-gap, 8, 15);
         }
         .button {
-            padding-top: 0.3rem;
-            padding-bottom: 0.3rem;
-            @include mixins.responsive-property(padding-left, 8, 14);
-            @include mixins.responsive-property(padding-right, 8, 14);
+            border: none;
+            background-color: transparent;
+            padding: 0;
             &__text {
                 display: none;
+            }
+            .checkbox {
+                @include mixins.responsive-property(width, 27, 21);
+                @include mixins.responsive-property(height, 27, 21);
+                &::before {
+                    @include mixins.responsive-property(
+                        background-size,
+                        20,
+                        17
+                    );
+                }
+            }
+            &__image {
+                @include mixins.responsive-property(width, 36, 28);
+                @include mixins.responsive-property(height, 36, 28);
+                @include mixins.responsive-property(background-size, 36, 28);
+                opacity: 0.8;
+                filter: brightness(0) saturate(100%) invert(11%) sepia(14%)
+                    saturate(1169%) hue-rotate(187deg) brightness(96%)
+                    contrast(96%);
+                @media (hover: hover) {
+                    &:hover {
+                        filter: brightness(0) saturate(100%) invert(40%)
+                            sepia(68%) saturate(4194%) hue-rotate(37deg)
+                            brightness(100%) contrast(95%);
+                    }
+                }
             }
         }
         .panel__button-up {
             display: flex;
+            .button__image {
+                background-image: url('assets/images/ic-arrow-up.svg');
+            }
         }
     }
 }

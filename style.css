@@ -723,7 +723,7 @@
   padding: 0.9rem 0.3rem;
   box-sizing: border-box;
 }
-.panel_fixed .panel__inner .work-area {
+.panel_fixed .work-area {
   width: auto;
   margin: 0;
 }
@@ -822,12 +822,12 @@
 }
 @media (min-width: 1024px) {
   .panel_fixed .button .checkbox {
-    width: 24px;
+    width: 21px;
   }
 }
 @media screen and (max-width: 1023px) and (min-width: 361px) {
   .panel_fixed .button .checkbox {
-    width: calc(27px + -0.0045180723 * (100vw - 360px));
+    width: calc(27px + -0.0090361446 * (100vw - 360px));
   }
 }
 @media (max-width: 360px) {
@@ -837,12 +837,12 @@
 }
 @media (min-width: 1024px) {
   .panel_fixed .button .checkbox {
-    height: 24px;
+    height: 21px;
   }
 }
 @media screen and (max-width: 1023px) and (min-width: 361px) {
   .panel_fixed .button .checkbox {
-    height: calc(27px + -0.0045180723 * (100vw - 360px));
+    height: calc(27px + -0.0090361446 * (100vw - 360px));
   }
 }
 @media (max-width: 360px) {
@@ -865,17 +865,14 @@
     background-size: 20px;
   }
 }
-.panel_fixed .button .checkbox::before {
-  background-size: px;
-}
 @media (min-width: 1024px) {
   .panel_fixed .button__image {
-    width: 32px;
+    width: 28px;
   }
 }
 @media screen and (max-width: 1023px) and (min-width: 361px) {
   .panel_fixed .button__image {
-    width: calc(36px + -0.0060240964 * (100vw - 360px));
+    width: calc(36px + -0.0120481928 * (100vw - 360px));
   }
 }
 @media (max-width: 360px) {
@@ -885,12 +882,12 @@
 }
 @media (min-width: 1024px) {
   .panel_fixed .button__image {
-    height: 32px;
+    height: 28px;
   }
 }
 @media screen and (max-width: 1023px) and (min-width: 361px) {
   .panel_fixed .button__image {
-    height: calc(36px + -0.0060240964 * (100vw - 360px));
+    height: calc(36px + -0.0120481928 * (100vw - 360px));
   }
 }
 @media (max-width: 360px) {
@@ -900,12 +897,12 @@
 }
 @media (min-width: 1024px) {
   .panel_fixed .button__image {
-    background-size: 32px;
+    background-size: 28px;
   }
 }
 @media screen and (max-width: 1023px) and (min-width: 361px) {
   .panel_fixed .button__image {
-    background-size: calc(36px + -0.0060240964 * (100vw - 360px));
+    background-size: calc(36px + -0.0120481928 * (100vw - 360px));
   }
 }
 @media (max-width: 360px) {
@@ -919,7 +916,7 @@
 }
 @media (hover: hover) {
   .panel_fixed .button__image:hover {
-    filter: brightness(0) saturate(100%) invert(29%) sepia(42%) saturate(2158%) hue-rotate(350deg) brightness(89%) contrast(97%);
+    filter: brightness(0) saturate(100%) invert(40%) sepia(68%) saturate(4194%) hue-rotate(37deg) brightness(100%) contrast(95%);
   }
 }
 .panel_fixed .panel__button-up {
